@@ -24,12 +24,9 @@ class GIO():
         self.nicegirls = [pickedCandy() for a in range(GIO.NICE_N_GIRLS)]
         self.niceboys = [pickedCandy() for a in range(GIO.NICE_N_BOYS)]
 
-    def compare_proportion_differences(self) ->dict:
-        return {
-            "boyDiff": getProportionDiff(self.crustyboys, self.niceboys),
-            "girlDiff": getProportionDiff(self.crustygirls, self.nicegirls)
-        }
-    
+    def compare_proportion_differences(self) ->float:
+        return getProportionDiff(self.crustyboys, self.niceboys) - getProportionDiff(self.crustygirls, self.nicegirls)
+   
 
 class GENE():
     CRUSTY_N_GIRLS = 10
@@ -43,11 +40,8 @@ class GENE():
         self.nicegirls = [pickedCandy() for a in range(GIO.NICE_N_GIRLS)]
         self.niceboys = [pickedCandy() for a in range(GIO.NICE_N_BOYS)]
 
-    def compare_proportion_differences(self) ->dict:
-        return {
-            "boyDiff": getProportionDiff(self.crustyboys, self.niceboys),
-            "girlDiff": getProportionDiff(self.crustygirls, self.nicegirls)
-        }
+    def compare_proportion_differences(self) ->float:
+        return getProportionDiff(self.crustyboys, self.niceboys) - getProportionDiff(self.crustygirls, self.nicegirls)
 
 
 class TEDDY():
@@ -62,13 +56,10 @@ class TEDDY():
         self.nicegirls = [pickedCandy() for a in range(GIO.NICE_N_GIRLS)]
         self.niceboys = [pickedCandy() for a in range(GIO.NICE_N_BOYS)]
 
-    def compare_proportion_differences(self) ->dict:
-        return {
-            "boyDiff": getProportionDiff(self.crustyboys, self.niceboys),
-            "girlDiff": getProportionDiff(self.crustygirls, self.nicegirls)
-        }
+    def compare_proportion_differences(self) ->float:
+        return getProportionDiff(self.crustyboys, self.niceboys) - getProportionDiff(self.crustygirls, self.nicegirls)
 
-HOW_MANY_RUNS = 10000
+HOW_MANY_RUNS = 50000
 def initial_sim():
     results = []
     for x in range(HOW_MANY_RUNS):
@@ -112,10 +103,7 @@ def sim_for_gender_diff():
         teddy = TEDDY()
         teddy_diff = teddy.compare_proportion_differences()
 
-        avg_boy_diff = statistics.mean([x["boyDiff"] for x in [gio_diff, gene_diff, teddy_diff]])
-        avg_girl_diff = statistics.mean([x["girlDiff"] for x in [gio_diff, gene_diff, teddy_diff]])
-
-        results.append(avg_boy_diff - avg_girl_diff)
+        results.append(statistics.mean([gio_diff, gene_diff, teddy_diff]))
     return results
 
 
@@ -135,7 +123,7 @@ def analyze_gender_diff(our_average_gender_proportion_difference):
     else:
         print('falls within natural error. ' + str(percent_greater_than_observed) + '% of trials achieved a difference greater than ' + str(our_average_gender_proportion_difference))
 
-analyze_gender_diff(.333)
+analyze_gender_diff(.32)
 
 
         
