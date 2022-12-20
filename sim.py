@@ -4,15 +4,7 @@ import matplotlib.pyplot as plt
 
 print("WE OUT")
 
-def pickedCandy() -> bool:
-    return random.randint(0, 1) == 1
 
-def getProportionAccepted(l:list) -> float:
-    return (sum(1.0 for element in l if element) / len(l))
-
-def getProportionDiff(list1:list, list2:list) -> float:
-    """RETURNS THE DIFFERENCE IN PROPORTIONS. LIST2-LIST1"""
-    return getProportionAccepted(list2) - getProportionAccepted(list1)
 
 
 
@@ -25,24 +17,41 @@ class PERSON():
         self.generate_random()
 
     def generate_random(self):
-        self.crustygirls = [pickedCandy() for a in range(self.CRUSTY_N_GIRLS)]
-        self.crustyboys = [pickedCandy() for a in range(self.CRUSTY_N_BOYS)]
-        self.nicegirls = [pickedCandy() for a in range(self.NICE_N_GIRLS)]
-        self.niceboys = [pickedCandy() for a in range(self.NICE_N_BOYS)]
+        self.crustygirls = [PERSON.pickedCandy() for a in range(self.CRUSTY_N_GIRLS)]
+        self.crustyboys = [PERSON.pickedCandy() for a in range(self.CRUSTY_N_BOYS)]
+        self.nicegirls = [PERSON.pickedCandy() for a in range(self.NICE_N_GIRLS)]
+        self.niceboys = [PERSON.pickedCandy() for a in range(self.NICE_N_BOYS)]
 
     def simulate_gender_diff(self, trials:int) ->float:
         results = []
         for i in range(trials):
             self.generate_random()
-            results.append(getProportionDiff(self.crustyboys, self.niceboys) - getProportionDiff(self.crustygirls, self.nicegirls))
+            results.append(
+                PERSON.getProportionDiff(self.crustyboys, self.niceboys) 
+                - PERSON.getProportionDiff(self.crustygirls, self.nicegirls)
+            )
         return results
 
+    def pickedCandy() -> bool:
+        return random.randint(0, 1) == 1
+
+    def getProportionAccepted(l:list) -> float:
+        return (sum(1.0 for element in l if element) / len(l))
+
+    def getProportionDiff(list1:list, list2:list) -> float:
+        """RETURNS THE DIFFERENCE IN PROPORTIONS. LIST2-LIST1"""
+        return PERSON.getProportionAccepted(list2) - PERSON.getProportionAccepted(list1)
 
     def simulate_clothing(self, trials:int):
         results = []
         for i in range(trials):
             self.generate_random()
-            results.append(getProportionDiff(self.crustyboys + self.crustygirls, self.niceboys + self.nicegirls))
+            results.append(
+                PERSON.getProportionDiff(
+                    self.crustyboys + self.crustygirls, 
+                    self.niceboys + self.nicegirls
+                )
+            )
         return results
 
     def analyze_trials(self, y, trials:list):
@@ -102,7 +111,7 @@ class TEDDY(PERSON):
 
 gio = GIO()
 print(gio.simulate_clothing(100))
-
+gio.analyze_trials()
 
 
 
